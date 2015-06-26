@@ -12,7 +12,7 @@ Preload.prototype = {
     this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
     this.load.setPreloadSprite(this.asset);
     this.load.spritesheet('choking_guy', 'assets/choking_guy.png', 280, 320, 9);
-
+    this.load.image('arm', 'assets/arm.png');
   },
   create: function() {
     this.asset.cropEnabled = false;

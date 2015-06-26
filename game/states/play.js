@@ -4,8 +4,9 @@
   Play.prototype = {
     create: function() {
       this.guy = this.game.add.sprite(this.game.width * 0.5, this.game.height, 'choking_guy');
-      this.guy.anchor.setTo(0.5, 1.0);
       this.guy.inputEnabled = true;
+      this.guy.hitArea = new Phaser.Rectangle(-20, -150, 90, 70);//95, 172, 90, 40);
+      this.guy.anchor.setTo(0.5, 1.0);
       this.isChoking = false;
       this.guy.events.onInputDown.add(this.onPressThroat, this);
       this.guy.events.onInputUp.add(this.onReleaseThroat, this);
@@ -15,8 +16,28 @@
       this.chokeDuration = 0.0;
       this.currentFrameDuration = 0.0;
       this.chokeArrivalEpsilon = 0.02;
+      //
+      this.arm = this.game.add.sprite(this.game.width * 0.5, this.game.height, 'arm');
+      this.arm.anchor.setTo(0.5, 0.1);
     },
     update: function() {
+      this.updateArm();
+      this.updateGuy();
+    },
+    updateArm: function () {
+      if (this.isChoking) {
+        this.arm.scale.setTo(0.8, 0.8);
+      } else {
+        this.arm.scale.setTo(1.0, 1.0);
+      }
+      var pointer = this.game.input.activePointer;
+      if (pointer && pointer.withinGame) {
+        this.arm.position.setTo(pointer.x, pointer.y);
+      } else {
+        this.arm.visi
+      }
+    },
+    updateGuy: function () {
       if (this.isChoking) {
         var dt = this.game.time.physicsElapsed;
         this.chokeDuration += dt;
@@ -37,7 +58,6 @@
       } else {
         this.guy.frame = 0;
       }
-     
     },
     onPressThroat: function() {
       this.isChoking = true;
