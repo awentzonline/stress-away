@@ -111,19 +111,24 @@ module.exports = Menu;
       this.chokeFrameTarget = 0.5;
       this.chokeDuration = 0.0;
       this.currentFrameDuration = 0.0;
-      this.changeFrameProbability = 1.5;  // per second
+      this.chokeArrivalEpsilon = 0.02;
     },
     update: function() {
       if (this.isChoking) {
         var dt = this.game.time.physicsElapsed;
         this.chokeDuration += dt;
         this.currentFrameDuration += dt;
-        if (Math.random() < this.changeFrameProbability * this.currentFrameDuration * (this.chokeDuration / 3 + 1)) {
+        if (Math.abs(this.chokeFrameTarget - this.chokeFramePos) < this.chokeArrivalEpsilon) {
+          if (this.chokeFrameTarget > 0.5) {
+            this.chokeFrameTarget = Math.random() * 0.4;
+          } else {
+            this.chokeFrameTarget = 0.6 + Math.random() * 0.4;
+          }
+          
           this.currentFrameDuration = 0.0;
-          this.chokeFrameTarget = Math.random();
         }
         var dp = this.chokeFrameTarget - this.chokeFramePos;
-        this.chokeFramePos += dp * 0.5 * dt * 16;
+        this.chokeFramePos += dp * 0.5 * dt * Math.min(32, (this.chokeDuration * 4 + 12));
         var chokeFrameIndex = Math.floor(this.chokeFramePos * this.chokeFrames.length);
         this.guy.frame = this.chokeFrames[chokeFrameIndex];
       } else {
