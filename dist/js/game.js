@@ -106,25 +106,40 @@ module.exports = Menu;
       this.isChoking = false;
       this.guy.events.onInputDown.add(this.onPressThroat, this);
       this.guy.events.onInputUp.add(this.onReleaseThroat, this);
-      this.chokeFrames = [0,1,2,3,4,5,6,7,8];
-      this.chokeFrameIndex = Math.floor(this.chokeFrames.length / 2);
+      this.chokeFrames = [1,2,3,4,5,6,7,8];
+      this.chokeFramePos = 0.5;
+      this.chokeFrameTarget = 0.5;
+      this.chokeDuration = 0.0;
+      this.currentFrameDuration = 0.0;
+      this.changeFrameProbability = 1.5;  // per second
     },
     update: function() {
       if (this.isChoking) {
-        this.chokeFrameIndex += Math.round(Math.random() * 2 - 1);
-        this.chokeFrameIndex = Math.max(1, Math.min(this.chokeFrameIndex, this.chokeFrames.length - 1));
+        var dt = this.game.time.physicsElapsed;
+        this.chokeDuration += dt;
+        this.currentFrameDuration += dt;
+        if (Math.random() < this.changeFrameProbability * this.currentFrameDuration * (this.chokeDuration / 3 + 1)) {
+          this.currentFrameDuration = 0.0;
+          this.chokeFrameTarget = Math.random();
+        }
+        var dp = this.chokeFrameTarget - this.chokeFramePos;
+        this.chokeFramePos += dp * 0.5 * dt * 16;
+        var chokeFrameIndex = Math.floor(this.chokeFramePos * this.chokeFrames.length);
+        this.guy.frame = this.chokeFrames[chokeFrameIndex];
       } else {
-        this.chokeFrameIndex = 0;
+        this.guy.frame = 0;
       }
-      this.guy.frame = this.chokeFrames[this.chokeFrameIndex];
+     
     },
     onPressThroat: function() {
       this.isChoking = true;
-      this.chokeFrameIndex = Math.floor(this.chokeFrames.length / 2);
+      this.chokeFramePos = 0.5;
+      this.chokeFrameTarget = this.chokeFramePos;
+      this.chokeDuration = 0.0;
+      this.currentFrameDuration = 0.0;
     },
     onReleaseThroat: function() {
       this.isChoking = false;
-      this.chokeFrameIndex = Math.floor(this.chokeFrames.length / 2);
     }
   };
   
