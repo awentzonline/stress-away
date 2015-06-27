@@ -170,10 +170,9 @@ module.exports = Menu;
       this.instructions = [
         "Science has shown physical violence\nto be the key to releasing stress.",
         "The simulation begins now.\nChoke this man.",
-        "Press on his throat. The longer the better.",
         "It's just a computer program so don't worry.",
         {
-          text: "I did give it a pain counter that\ngoes up while being choked.",
+          text: "Though I did give it a pain counter that\ngoes up while being choked.",
           action: function () {
             var tween = this.game.add.tween(this.painText).to(
               {alpha: 1}, 1000, Phaser.Easing.Linear.None, true, 3500
@@ -185,7 +184,7 @@ module.exports = Menu;
         "Just as the life would be leaving the\nbody of this guy if he were real.",
         "But he's not, so choke away guilt-free!",
         "Studies have shown that people who\nchoked the longest had the best results.",
-        "You should try to get the pain meter\nabove 20,000 to ensure effectiveness.",
+        "You should try to get the pain meter\nabove 20,000 to ensure maximum relief.",
         "Focus your mind on something that\nhappened today which caused you stress.",
         "Now imagine this prick was behind it.\nLook into his eyes!",
         "CHOKE",
