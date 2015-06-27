@@ -74,28 +74,7 @@
         "Ok ok take a break.\nFeeling a little better?",
         "Do this every night before bed!",
         "Stick around if you're not\ndone choking!",
-        "Otherwise, see you next time!",
-        "CHOKE",
-        "CHOKE",
-        "CHOKE",
-        "CHOKE",
-        "CHOKE",
-        "CHOKE",
-        "CHOKE",
-        "CHOKE",
-        "CHOKE",
-        "CHOKE",
-        "CHOKE",
-        "CHOKE",
-        "CHOKE",
-        "CHOKE",
-        "CHOKE",
-        "CHOKE",
-        "CHOKE",
-        "CHOKE",
-        "CHOKE",
-        "CHOKE",
-        "CHOKE"
+        "Otherwise, see you next time!"
       ];
       this.painText = this.game.add.text(
         this.game.width * 0.1, this.game.height * 0.85,
@@ -205,6 +184,9 @@
     },
     nextText: function () {
       var thisMessage = this.instructions.shift();
+      if (!thisMessage) {
+        this.instructionText.kill();
+      }
       if (thisMessage.text) {
         var action = thisMessage.action;
         thisMessage = thisMessage.text;
@@ -216,11 +198,10 @@
       tween.onComplete.add(function () {
         var tween = this.game.add.tween(this.instructionText).to({alpha: 0}, 1000, Phaser.Easing.Linear.None, true, 1000);
         tween.onComplete.add(function () {
-          if (this.instructions.length > 0) {
-            this.nextText();  
-          } else {
-            this.instructionText.kill();
+          if (this.instructions.length == 0) {
+            this.instructions.push('CHOKE');
           }
+          this.nextText();
         }, this);
       }, this);
     }
