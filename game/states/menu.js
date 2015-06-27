@@ -33,7 +33,9 @@ Menu.prototype = {
     if(this.game.input.activePointer.justPressed()) {
       this.game.state.start('play');
     }
-    this.updateArm();
+    if (this.arm) {
+      this.updateArm();
+    }
   },
   updateArm: function () {
       var pointer = this.game.input.activePointer;
