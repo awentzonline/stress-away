@@ -162,7 +162,9 @@ module.exports = Menu;
         {
           text: "I did give it a pain counter that\ngoes up while being choked.",
           action: function () {
-            this.game.add.tween(this.painText).to({alpha: 1}, 1000, Phaser.Easing.Linear.None, true, 1000);
+            var tween = this.game.add.tween(this.painText).to(
+              {alpha: 1}, 1000, Phaser.Easing.Linear.None, true, 3500
+            );
           }.bind(this)
         },
         "But I don't think it's the same as the\npain you, I, or say, a dog would feel.",
