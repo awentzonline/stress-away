@@ -116,6 +116,12 @@ module.exports = Menu;
       //
       this.arm = this.game.add.sprite(this.game.width * 0.5, this.game.height, 'arm');
       this.arm.anchor.setTo(0.5, 0.1);
+      // sfx
+      this.chokingSfx = this.game.add.audio('choking');
+      this.chokingSfx.allowMultiple = true;
+      this.chokingSfx.addMarker('choke0', 0, 0.88);
+      this.chokingSfx.addMarker('choke1', 0.88, 0.68);
+      this.chokingSfx.addMarker('choke2', 1.56, 1.12);
     },
     update: function() {
       this.updateArm();
@@ -130,8 +136,6 @@ module.exports = Menu;
       var pointer = this.game.input.activePointer;
       if (pointer && pointer.withinGame) {
         this.arm.position.setTo(pointer.x, pointer.y);
-      } else {
-        this.arm.visi
       }
     },
     updateGuy: function () {
@@ -145,7 +149,10 @@ module.exports = Menu;
           } else {
             this.chokeFrameTarget = 0.6 + Math.random() * 0.4;
           }
-          
+          if (!this.chokingSfx.isPlaying) {
+            var soundNames = Object.keys(this.chokingSfx.markers);
+            this.chokingSfx.play(soundNames[Math.floor(Math.random() * soundNames.length)]);
+          }
           this.currentFrameDuration = 0.0;
         }
         var dp = this.chokeFrameTarget - this.chokeFramePos;
@@ -185,6 +192,7 @@ Preload.prototype = {
     this.load.setPreloadSprite(this.asset);
     this.load.spritesheet('choking_guy', 'assets/choking_guy.png', 280, 320, 9);
     this.load.image('arm', 'assets/arm.png');
+    this.load.audio('choking', 'assets/choking.mp3');
   },
   create: function() {
     this.asset.cropEnabled = false;
