@@ -83,18 +83,18 @@ Menu.prototype = {
 
   },
   create: function() {
-    var style = { font: '65px Arial', fill: '#ffffff', align: 'center'};
-    this.sprite = this.game.add.sprite(this.game.world.centerX, 138, 'yeoman');
-    this.sprite.anchor.setTo(0.5, 0.5);
-
-    this.titleText = this.game.add.text(this.game.world.centerX, 300, '\'Allo, \'Allo!', style);
+    var style = { font: '24px Arial', fill: '#ffffff', align: 'center'};
+    
+    this.titleText = this.game.add.text(
+      this.game.world.centerX, this.game.height * 0.2,
+      'Stress Blaster!',
+      style
+    );
     this.titleText.anchor.setTo(0.5, 0.5);
 
     this.instructionsText = this.game.add.text(this.game.world.centerX, 400, 'Click anywhere to play "Click The Yeoman Logo"', { font: '16px Arial', fill: '#ffffff', align: 'center'});
     this.instructionsText.anchor.setTo(0.5, 0.5);
 
-    this.sprite.angle = -20;
-    this.game.add.tween(this.sprite).to({angle: 20}, 1000, Phaser.Easing.Linear.NONE, true, 0, 1000, true);
   },
   update: function() {
     if(this.game.input.activePointer.justPressed()) {
@@ -111,6 +111,7 @@ module.exports = Menu;
   function Play() {}
   Play.prototype = {
     create: function() {
+      //
       this.guy = this.game.add.sprite(this.game.width * 0.5, this.game.height, 'choking_guy');
       this.guy.inputEnabled = true;
       this.guy.hitArea = new Phaser.Rectangle(-20, -150, 90, 70);//95, 172, 90, 40);
@@ -126,7 +127,7 @@ module.exports = Menu;
       this.currentFrameDuration = 0.0;
       this.chokeArrivalEpsilon = 0.02;
       //
-      this.arm = this.game.add.sprite(this.game.width * 0.5, this.game.height, 'arm');
+      this.arm = this.game.add.sprite(this.game.width * 0.5, this.game.height * 0.8, 'arm');
       this.arm.anchor.setTo(0.5, 0.1);
       // sfx
       this.chokingSfx = this.game.add.audio('choking');
@@ -134,8 +135,25 @@ module.exports = Menu;
       this.chokingSfx.addMarker('choke0', 0, 0.84);
       this.chokingSfx.addMarker('choke1', 0.88, 0.68);
       this.chokingSfx.addMarker('choke2', 1.56, 1.12);
+      //
+      this.titleText = this.game.add.text(
+        this.game.world.centerX, this.game.height * 0.15,
+        'Feeling stressed out?\nChoke this man.',
+        { font: '24px Arial', fill: '#ffffff', align: 'center'}
+      );
+      this.titleText.anchor.setTo(0.5, 0.5);
+      this.instructionText = this.game.add.text(
+        this.game.world.centerX, this.game.height * 0.9,
+        'Science has shown physical violence\nto be the key to releasing stress.',
+        { font: '16px Arial', fill: '#ffffff', align: 'left'}
+      );
+      this.instructionText.anchor.setTo(0.5, 0.5);
+      this.textIsVisible = true;
     },
     update: function() {
+      if (this.textIsVisible) {
+        this.updateText();
+      }
       this.updateChoking();
       this.updateArm();
       this.updateGuy();
@@ -194,6 +212,21 @@ module.exports = Menu;
         this.isChoking = this.isOverThroat;
       } else {
         this.isChoking = false;
+      }
+    },
+    updateText: function () {
+      var pointer = this.game.input.activePointer;
+      if (pointer && pointer.withinGame) {
+        this.textIsVisible = false;
+        console.log('poop')
+        var tween = this.game.add.tween(this.instructionText).to({alpha: 0}, 1000, Phaser.Easing.Linear.None, true, 100);
+        tween.onComplete.add(function () {
+          this.instructionText.kill();
+        }, this);
+        tween = this.game.add.tween(this.titleText).to({alpha: 0}, 1000, Phaser.Easing.Linear.None, true, 100);
+        tween.onComplete.add(function () {
+          this.instructionText.kill();
+        }, this);
       }
     }
   };
