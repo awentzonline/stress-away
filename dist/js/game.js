@@ -131,6 +131,7 @@ module.exports = Menu;
       if (this.game.device.desktop) {
         this.arm = this.game.add.sprite(this.game.width * 0.5, this.game.height * 0.8, 'arm');
         this.arm.anchor.setTo(0.5, 0.1);
+        this.armSwayRadius = 17;
       } else {
         this.arm = null;
       }
@@ -170,7 +171,7 @@ module.exports = Menu;
         "But I don't think it's the same as the\npain you, I, or say, a dog would feel.",
         "Breathe deeply and allow all the stress\nto drain out of your body.",
         "Just as the life would be leaving the\nbody of this guy if he were real.",
-        "But he's not so choke away guilt-free!",
+        "But he's not, so choke away guilt-free!",
         "Studies have shown that people who\nchoked the longest had the best results.",
         "You should try to get the pain meter\nabove 20,000 to ensure effectiveness.",
         "Focus your mind on something that\nhappened today which caused you stress.",
@@ -207,6 +208,11 @@ module.exports = Menu;
       var pointer = this.game.input.activePointer;
       if (pointer && pointer.withinGame) {
         this.arm.position.setTo(pointer.x, pointer.y);
+        // follow the choking a little bit
+        if (this.isChoking) {
+          var offsetX = this.armSwayRadius * (2 * this.chokeFramePos - 1);
+          this.arm.position.x += offsetX; 
+        }
       }
     },
     updateGuy: function () {
