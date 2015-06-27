@@ -58,7 +58,7 @@
           }.bind(this)
         },
         "But I don't think it's the same as the\npain you, I, or say, a dog would feel.",
-        "Breathe deeply and allow all the stress\nto drain out of your body",
+        "Breathe deeply and allow all the stress\nto drain out of your body.",
         "Just as the life would be leaving the\nbody of this guy if he were real.",
         "But he's not and you're not crushing\nthe larynx of anything that's alive.",
         "Studies have shown that people who\nchoked the longest had the best results.",
