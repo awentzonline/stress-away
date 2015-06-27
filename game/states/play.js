@@ -128,6 +128,7 @@
     updateGuy: function () {
       if (this.isChoking) {
         var dt = this.game.time.physicsElapsed;
+        this.chokingSfx.volume = 1.0;
         this.chokeDuration += dt;
         this.currentFrameDuration += dt;
         if (Math.abs(this.chokeFrameTarget - this.chokeFramePos) < this.chokeArrivalEpsilon) {
@@ -147,6 +148,7 @@
         var chokeFrameIndex = Math.floor(this.chokeFramePos * this.chokeFrames.length);
         this.guy.frame = this.chokeFrames[chokeFrameIndex];
       } else {
+        this.chokingSfx.volume *= 0.3;
         this.guy.frame = 0;
       }
     },

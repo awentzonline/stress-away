@@ -171,7 +171,7 @@ module.exports = Menu;
         "But he's not and you're not crushing\nthe larynx of anything that's alive.",
         "Studies have shown that people who\nchoked the longest had the best results.",
         "Of course, the pain counter will\ncontinue to increment.",
-        "If that matters to you at all.\nI'm not worried about it, really.",
+        "If that matters to you at all.\nI wouldn't worry about it.",
         "Focus your mind on something that\nhappened today which caused you stress.",
         "This is the prick that did that!\nLook into his eyes!",
         "CHOKE",
@@ -236,6 +236,7 @@ module.exports = Menu;
     updateGuy: function () {
       if (this.isChoking) {
         var dt = this.game.time.physicsElapsed;
+        this.chokingSfx.volume = 1.0;
         this.chokeDuration += dt;
         this.currentFrameDuration += dt;
         if (Math.abs(this.chokeFrameTarget - this.chokeFramePos) < this.chokeArrivalEpsilon) {
@@ -255,6 +256,7 @@ module.exports = Menu;
         var chokeFrameIndex = Math.floor(this.chokeFramePos * this.chokeFrames.length);
         this.guy.frame = this.chokeFrames[chokeFrameIndex];
       } else {
+        this.chokingSfx.volume *= 0.3;
         this.guy.frame = 0;
       }
     },
