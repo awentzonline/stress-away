@@ -271,6 +271,7 @@ module.exports = Menu;
           this.currentFrameDuration = 0.0;
           ga('send', {
             'hitType': 'event',
+            'eventCategory': 'game',
             'eventAction': 'started choking'
           });
         }
@@ -279,6 +280,7 @@ module.exports = Menu;
         if (this.isChoking) {
           ga('send', {
             'hitType': 'event',
+            'eventCategory': 'game',
             'eventAction': 'stopped choking',
             'eventValue': this.chokeDuration
           });

@@ -163,6 +163,7 @@
           this.currentFrameDuration = 0.0;
           ga('send', {
             'hitType': 'event',
+            'eventCategory': 'game',
             'eventAction': 'started choking'
           });
         }
@@ -171,6 +172,7 @@
         if (this.isChoking) {
           ga('send', {
             'hitType': 'event',
+            'eventCategory': 'game',
             'eventAction': 'stopped choking',
             'eventValue': this.chokeDuration
           });
