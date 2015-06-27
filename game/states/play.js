@@ -18,6 +18,7 @@
       this.chokeDuration = 0.0;
       this.currentFrameDuration = 0.0;
       this.chokeArrivalEpsilon = 0.02;
+      this.pain = 0.0;  // TOOD: make more human-like
       //
       if (this.game.device.desktop) {
         this.arm = this.game.add.sprite(this.game.width * 0.5, this.game.height * 0.8, 'arm');
@@ -39,15 +40,63 @@
       );
       this.titleText.anchor.setTo(0.5, 0.5);
       this.instructionText = this.game.add.text(
-        this.game.world.centerX, this.game.height * 0.9,
-        'Science has shown physical violence\nto be the key to releasing stress.',
+        this.game.world.centerX, this.game.height * 0.15,
+        '',
         { font: '16px Arial', fill: '#ffffff', align: 'left'}
       );
+      this.instructionText.alpha = 0;
       this.instructionText.anchor.setTo(0.5, 0.5);
-      this.textIsVisible = true;
+      this.textSequenceStarted = false;
+      this.instructions = [
+        "Science has shown physical violence\nto be the key to releasing stress.",
+        "Press on his throat. The longer the better.",
+        "It's just a computer program so don't worry.",
+        "I did give it a pain counter that\ngoes up while being choked.",
+        "But I don't think it's the same as the\npain you, I, or say, a dog would feel.",
+        "Breath deeply and allow all the stress\nto drain out of your body",
+        "Just as the life would be leaving the\nbody of this guy if he were real.",
+        "But he's not and you're not crushing\nthe larynx of anything that's alive.",
+        "Studies have shown that people who\nchoked the longest had the best results.",
+        "Of course, the pain counter will\ncontinue to increment.",
+        "If that matters to you at all.\nI'm not worried about it, really.",
+        "Focus your mind on something that\nhappened today which caused you stress.",
+        "This is the prick that did that!\nLook into his eyes!",
+        "CHOKE",
+        "CHOKE",
+        "CHOKE",
+        "CHOKE",
+        "CHOKE",
+        "CHOKE",
+        "CHOKE",
+        "Ok ok take a break.\nFeeling a little better?",
+        "Do this every night before bed!",
+        "Stick around if you're not\ndone choking!",
+        "Otherwise, see you next time!",
+        "CHOKE",
+        "CHOKE",
+        "CHOKE",
+        "CHOKE",
+        "CHOKE",
+        "CHOKE",
+        "CHOKE",
+        "CHOKE",
+        "CHOKE",
+        "CHOKE",
+        "CHOKE",
+        "CHOKE",
+        "CHOKE",
+        "CHOKE",
+        "CHOKE",
+        "CHOKE",
+        "CHOKE",
+        "CHOKE",
+        "CHOKE",
+        "CHOKE",
+        "CHOKE"
+      ];
     },
     update: function() {
-      if (this.textIsVisible) {
+      if (!this.textSequenceStarted) {
         this.updateText();
       }
       this.updateChoking();
@@ -55,6 +104,7 @@
         this.updateArm();
       }
       this.updateGuy();
+      this.updateScore();
     },
     updateArm: function () {
       if (this.isChoking) {
@@ -92,6 +142,11 @@
         this.guy.frame = 0;
       }
     },
+    updateScore: function () {
+      if (this.isChoking) {
+        this.pain += this.game.time.physicsElapsed * 10;
+      }
+    },
     onOverThroat: function () {
       this.isOverThroat = true;
     },
@@ -106,26 +161,48 @@
           this.chokeFrameTarget = this.chokeFramePos;
           this.chokeDuration = 0.0;
           this.currentFrameDuration = 0.0;
+          ga('send', {
+            'hitType': 'event',
+            'eventAction': 'started choking'
+          });
         }
         this.isChoking = this.isOverThroat;
       } else {
+        if (this.isChoking) {
+          ga('send', {
+            'hitType': 'event',
+            'eventAction': 'stopped choking',
+            'eventValue': this.chokeDuration
+          });
+        }
         this.isChoking = false;
       }
     },
     updateText: function () {
       var pointer = this.game.input.activePointer;
       if (pointer && pointer.withinGame) {
-        this.textIsVisible = false;
-        console.log('poop')
-        var tween = this.game.add.tween(this.instructionText).to({alpha: 0}, 1000, Phaser.Easing.Linear.None, true, 100);
+        this.textSequenceStarted = true;
+        var tween = this.game.add.tween(this.titleText).to({alpha: 0}, 1000, Phaser.Easing.Linear.None, true, 1000);
         tween.onComplete.add(function () {
-          this.instructionText.kill();
-        }, this);
-        tween = this.game.add.tween(this.titleText).to({alpha: 0}, 1000, Phaser.Easing.Linear.None, true, 100);
-        tween.onComplete.add(function () {
-          this.instructionText.kill();
+          this.nextText();
         }, this);
       }
+    },
+    nextText: function () {
+      var thisMessage = this.instructions.shift();
+      //var thisMessage = this.instructions.pop();
+      this.instructionText.text = thisMessage;
+      var tween = this.game.add.tween(this.instructionText).to({alpha: 1}, 1000, Phaser.Easing.Linear.None, true, 1000);
+      tween.onComplete.add(function () {
+        var tween = this.game.add.tween(this.instructionText).to({alpha: 0}, 1000, Phaser.Easing.Linear.None, true, 1000);
+        tween.onComplete.add(function () {
+          if (this.instructions.length > 0) {
+            this.nextText();  
+          } else {
+            this.instructionText.kill();
+          }
+        }, this);
+      }, this);
     }
   };
   
