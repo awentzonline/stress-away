@@ -21,13 +21,12 @@ Menu.prototype = {
     if (this.game.device.desktop) {
       this.arm = this.game.add.sprite(this.game.width * 0.5, this.game.height * 0.8, 'arm');
       this.arm.anchor.setTo(0.5, 0.1);
-      this.armSwayRadius = 17;
     } else {
       this.arm = null;
     }
 
-    var music = this.game.add.audio('background_music');
-    music.play();
+    // var music = this.game.add.audio('background_music');
+    // music.play();
   },
   update: function() {
     if(this.game.input.activePointer.justPressed()) {
