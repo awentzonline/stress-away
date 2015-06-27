@@ -12,6 +12,7 @@ Preload.prototype = {
     this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
     this.load.setPreloadSprite(this.asset);
     this.load.spritesheet('choking_guy', 'assets/choking_guy.png', 280, 320, 9);
+    this.load.image('logo', 'assets/stressaway.png');
     this.load.image('arm', 'assets/arm.png');
     this.load.audio('choking', 'assets/choking.mp3');
   },
@@ -20,7 +21,7 @@ Preload.prototype = {
   },
   update: function() {
     if(!!this.ready) {
-      this.game.state.start('play');
+      this.game.state.start('menu');
     }
   },
   onLoadComplete: function() {

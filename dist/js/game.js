@@ -83,24 +83,37 @@ Menu.prototype = {
 
   },
   create: function() {
-    var style = { font: '24px Arial', fill: '#ffffff', align: 'center'};
+    var logo = this.game.add.sprite(this.game.world.centerX, this.game.height * 0.3, 'logo');
+    logo.anchor.setTo(0.5, 0.5);
+    var style = { font: '18px Arial', fill: '#ffffff', align: 'right'};
     
     this.titleText = this.game.add.text(
-      this.game.world.centerX, this.game.height * 0.2,
-      'Stress Blaster!',
+      this.game.world.centerX, this.game.height * 0.6,
+      'A simulation-based approach\nto personal stress reduction.\n\nClick to begin',
       style
     );
     this.titleText.anchor.setTo(0.5, 0.5);
 
-    this.instructionsText = this.game.add.text(this.game.world.centerX, 400, 'Click anywhere to play "Click The Yeoman Logo"', { font: '16px Arial', fill: '#ffffff', align: 'center'});
-    this.instructionsText.anchor.setTo(0.5, 0.5);
-
+    if (this.game.device.desktop) {
+      this.arm = this.game.add.sprite(this.game.width * 0.5, this.game.height * 0.8, 'arm');
+      this.arm.anchor.setTo(0.5, 0.1);
+      this.armSwayRadius = 17;
+    } else {
+      this.arm = null;
+    }
   },
   update: function() {
     if(this.game.input.activePointer.justPressed()) {
       this.game.state.start('play');
     }
-  }
+    this.updateArm();
+  },
+  updateArm: function () {
+      var pointer = this.game.input.activePointer;
+      if (pointer && pointer.withinGame) {
+        this.arm.position.setTo(pointer.x, pointer.y);
+      }
+    },
 };
 
 module.exports = Menu;
@@ -142,12 +155,6 @@ module.exports = Menu;
       this.chokingSfx.addMarker('choke1', 0.88, 0.68);
       this.chokingSfx.addMarker('choke2', 1.56, 1.12);
       //
-      this.titleText = this.game.add.text(
-        this.game.world.centerX, this.game.height * 0.15,
-        'Feeling stressed out?\nChoke this man.',
-        { font: '24px Arial', fill: '#ffffff', align: 'center'}
-      );
-      this.titleText.anchor.setTo(0.5, 0.5);
       this.instructionText = this.game.add.text(
         this.game.world.centerX, this.game.height * 0.15,
         '',
@@ -158,6 +165,7 @@ module.exports = Menu;
       this.textSequenceStarted = false;
       this.instructions = [
         "Science has shown physical violence\nto be the key to releasing stress.",
+        "The simulation begins now.\nChoke this man.",
         "Press on his throat. The longer the better.",
         "It's just a computer program so don't worry.",
         {
@@ -285,10 +293,7 @@ module.exports = Menu;
       var pointer = this.game.input.activePointer;
       if (pointer && pointer.withinGame) {
         this.textSequenceStarted = true;
-        var tween = this.game.add.tween(this.titleText).to({alpha: 0}, 1000, Phaser.Easing.Linear.None, true, 1000);
-        tween.onComplete.add(function () {
-          this.nextText();
-        }, this);
+        this.nextText();
       }
     },
     nextText: function () {
@@ -303,9 +308,9 @@ module.exports = Menu;
       }
       //var thisMessage = this.instructions.pop();
       this.instructionText.text = thisMessage;
-      var tween = this.game.add.tween(this.instructionText).to({alpha: 1}, 1000, Phaser.Easing.Linear.None, true, 1000);
+      var tween = this.game.add.tween(this.instructionText).to({alpha: 1}, 1000, Phaser.Easing.Linear.None, true);
       tween.onComplete.add(function () {
-        var tween = this.game.add.tween(this.instructionText).to({alpha: 0}, 1000, Phaser.Easing.Linear.None, true, 1000);
+        var tween = this.game.add.tween(this.instructionText).to({alpha: 0}, 1000, Phaser.Easing.Linear.None, true, 2000);
         tween.onComplete.add(function () {
           if (this.instructions.length == 0) {
             this.instructions.push('CHOKE');
@@ -332,6 +337,7 @@ Preload.prototype = {
     this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
     this.load.setPreloadSprite(this.asset);
     this.load.spritesheet('choking_guy', 'assets/choking_guy.png', 280, 320, 9);
+    this.load.image('logo', 'assets/stressaway.png');
     this.load.image('arm', 'assets/arm.png');
     this.load.audio('choking', 'assets/choking.mp3');
   },
@@ -340,7 +346,7 @@ Preload.prototype = {
   },
   update: function() {
     if(!!this.ready) {
-      this.game.state.start('play');
+      this.game.state.start('menu');
     }
   },
   onLoadComplete: function() {

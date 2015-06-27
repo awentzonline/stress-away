@@ -34,12 +34,6 @@
       this.chokingSfx.addMarker('choke1', 0.88, 0.68);
       this.chokingSfx.addMarker('choke2', 1.56, 1.12);
       //
-      this.titleText = this.game.add.text(
-        this.game.world.centerX, this.game.height * 0.15,
-        'Feeling stressed out?\nChoke this man.',
-        { font: '24px Arial', fill: '#ffffff', align: 'center'}
-      );
-      this.titleText.anchor.setTo(0.5, 0.5);
       this.instructionText = this.game.add.text(
         this.game.world.centerX, this.game.height * 0.15,
         '',
@@ -50,6 +44,7 @@
       this.textSequenceStarted = false;
       this.instructions = [
         "Science has shown physical violence\nto be the key to releasing stress.",
+        "The simulation begins now.\nChoke this man.",
         "Press on his throat. The longer the better.",
         "It's just a computer program so don't worry.",
         {
@@ -177,10 +172,7 @@
       var pointer = this.game.input.activePointer;
       if (pointer && pointer.withinGame) {
         this.textSequenceStarted = true;
-        var tween = this.game.add.tween(this.titleText).to({alpha: 0}, 1000, Phaser.Easing.Linear.None, true, 1000);
-        tween.onComplete.add(function () {
-          this.nextText();
-        }, this);
+        this.nextText();
       }
     },
     nextText: function () {
@@ -195,9 +187,9 @@
       }
       //var thisMessage = this.instructions.pop();
       this.instructionText.text = thisMessage;
-      var tween = this.game.add.tween(this.instructionText).to({alpha: 1}, 1000, Phaser.Easing.Linear.None, true, 1000);
+      var tween = this.game.add.tween(this.instructionText).to({alpha: 1}, 1000, Phaser.Easing.Linear.None, true);
       tween.onComplete.add(function () {
-        var tween = this.game.add.tween(this.instructionText).to({alpha: 0}, 1000, Phaser.Easing.Linear.None, true, 1000);
+        var tween = this.game.add.tween(this.instructionText).to({alpha: 0}, 1000, Phaser.Easing.Linear.None, true, 2000);
         tween.onComplete.add(function () {
           if (this.instructions.length == 0) {
             this.instructions.push('CHOKE');

@@ -7,24 +7,37 @@ Menu.prototype = {
 
   },
   create: function() {
-    var style = { font: '24px Arial', fill: '#ffffff', align: 'center'};
+    var logo = this.game.add.sprite(this.game.world.centerX, this.game.height * 0.3, 'logo');
+    logo.anchor.setTo(0.5, 0.5);
+    var style = { font: '18px Arial', fill: '#ffffff', align: 'right'};
     
     this.titleText = this.game.add.text(
-      this.game.world.centerX, this.game.height * 0.2,
-      'Stress Blaster!',
+      this.game.world.centerX, this.game.height * 0.6,
+      'A simulation-based approach\nto personal stress reduction.\n\nClick to begin',
       style
     );
     this.titleText.anchor.setTo(0.5, 0.5);
 
-    this.instructionsText = this.game.add.text(this.game.world.centerX, 400, 'Click anywhere to play "Click The Yeoman Logo"', { font: '16px Arial', fill: '#ffffff', align: 'center'});
-    this.instructionsText.anchor.setTo(0.5, 0.5);
-
+    if (this.game.device.desktop) {
+      this.arm = this.game.add.sprite(this.game.width * 0.5, this.game.height * 0.8, 'arm');
+      this.arm.anchor.setTo(0.5, 0.1);
+      this.armSwayRadius = 17;
+    } else {
+      this.arm = null;
+    }
   },
   update: function() {
     if(this.game.input.activePointer.justPressed()) {
       this.game.state.start('play');
     }
-  }
+    this.updateArm();
+  },
+  updateArm: function () {
+      var pointer = this.game.input.activePointer;
+      if (pointer && pointer.withinGame) {
+        this.arm.position.setTo(pointer.x, pointer.y);
+      }
+    },
 };
 
 module.exports = Menu;
