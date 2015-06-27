@@ -172,10 +172,10 @@ module.exports = Menu;
         "The simulation begins now.\nChoke this man.",
         "It's just a computer program so don't worry.",
         {
-          text: "Though I did give it a pain counter that\ngoes up while being choked.",
+          text: "Though I did give it a pain meter that\ngoes up while being choked.",
           action: function () {
             var tween = this.game.add.tween(this.painText).to(
-              {alpha: 1}, 1000, Phaser.Easing.Linear.None, true, 3500
+              {alpha: 1}, 1000, Phaser.Easing.Linear.None, true, 3000
             );
           }.bind(this)
         },
@@ -183,13 +183,14 @@ module.exports = Menu;
         "Breathe deeply and allow all the stress\nto drain out of your body.",
         "Just as the life would be leaving the\nbody of this guy if he were real.",
         "But he's not, so choke away guilt-free!",
-        "Studies have shown that people who\nchoked the longest had the best results.",
-        "You should try to get the pain meter\nabove 20,000 to ensure maximum relief.",
         "Focus your mind on something that\nhappened today which caused you stress.",
-        "Now imagine this prick was behind it.\nLook into his eyes!",
+        "Now imagine this prick was behind it.\nLook into his eyes and choke!",
         "CHOKE",
         "CHOKE",
-        "Don't stop until you are totally relaxed."
+        "Don't stop until you are totally relaxed.",
+        "CHOKE",
+        "CHOKE",
+        "Choke for as long as you need,\nfor as much time as you have."
       ];
       this.painText = this.game.add.text(
         this.game.width * 0.1, this.game.height * 0.85,
