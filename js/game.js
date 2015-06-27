@@ -140,7 +140,7 @@ module.exports = Menu;
     },
     updateArm: function () {
       if (this.isChoking) {
-        this.arm.scale.setTo(0.8, 0.8);
+        this.arm.scale.setTo(0.8, 0.84);
       } else {
         this.arm.scale.setTo(1.0, 1.0);
       }
