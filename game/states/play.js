@@ -8,8 +8,9 @@
       this.guy.hitArea = new Phaser.Rectangle(-20, -150, 90, 70);//95, 172, 90, 40);
       this.guy.anchor.setTo(0.5, 1.0);
       this.isChoking = false;
-      this.guy.events.onInputDown.add(this.onPressThroat, this);
-      this.guy.events.onInputUp.add(this.onReleaseThroat, this);
+      this.isOverThroat = false;
+      this.guy.events.onInputOver.add(this.onOverThroat, this);
+      this.guy.events.onInputOut.add(this.onOutThroat, this);
       this.chokeFrames = [1,2,3,4,5,6,7,8];
       this.chokeFramePos = 0.5;
       this.chokeFrameTarget = 0.5;
@@ -27,6 +28,7 @@
       this.chokingSfx.addMarker('choke2', 1.56, 1.12);
     },
     update: function() {
+      this.updateChoking();
       this.updateArm();
       this.updateGuy();
     },
@@ -66,15 +68,25 @@
         this.guy.frame = 0;
       }
     },
-    onPressThroat: function() {
-      this.isChoking = true;
-      this.chokeFramePos = 0.5;
-      this.chokeFrameTarget = this.chokeFramePos;
-      this.chokeDuration = 0.0;
-      this.currentFrameDuration = 0.0;
+    onOverThroat: function () {
+      this.isOverThroat = true;
     },
-    onReleaseThroat: function() {
-      this.isChoking = false;
+    onOutThroat: function () {
+      this.isOverThroat = false;
+    },
+    updateChoking: function () {
+      var pointer = this.game.input.activePointer;
+      if (pointer && pointer.withinGame && pointer.isDown) {
+        if (this.isOverThroat && !this.isChoking) {
+          this.chokeFramePos = 0.5;
+          this.chokeFrameTarget = this.chokeFramePos;
+          this.chokeDuration = 0.0;
+          this.currentFrameDuration = 0.0;
+        }
+        this.isChoking = this.isOverThroat;
+      } else {
+        this.isChoking = false;
+      }
     }
   };
   
