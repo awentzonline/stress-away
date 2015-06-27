@@ -62,19 +62,14 @@
         "But I don't think it's the same as the\npain you, I, or say, a dog would feel.",
         "Breathe deeply and allow all the stress\nto drain out of your body.",
         "Just as the life would be leaving the\nbody of this guy if he were real.",
-        "But he's not and you're not crushing\nthe larynx of anything that's alive.",
+        "But he's not so choke away guilt-free!",
         "Studies have shown that people who\nchoked the longest had the best results.",
-        "Of course, the pain counter will\ncontinue to increment.",
-        "If that matters to you at all.\nI wouldn't worry about it.",
+        "You should try to get the pain meter\nabove 20,000 to ensure effectiveness.",
         "Focus your mind on something that\nhappened today which caused you stress.",
-        "This is the prick that did that!\nLook into his eyes!",
+        "Now imagine this prick was behind it.\nLook into his eyes!",
         "CHOKE",
         "CHOKE",
-        "CHOKE",
-        "Ok ok take a break.\nFeeling a little better?",
-        "Do this every night before bed!",
-        "Stick around if you're not\ndone choking!",
-        "Otherwise, see you next time!"
+        "Don't stop until you are totally relaxed."
       ];
       this.painText = this.game.add.text(
         this.game.width * 0.1, this.game.height * 0.85,
