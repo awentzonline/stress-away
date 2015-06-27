@@ -6,7 +6,7 @@
       //
       this.guy = this.game.add.sprite(this.game.width * 0.5, this.game.height, 'choking_guy');
       this.guy.inputEnabled = true;
-      this.guy.hitArea = new Phaser.Rectangle(-20, -150, 90, 70);//95, 172, 90, 40);
+      this.guy.hitArea = new Phaser.Rectangle(-20, -150, 90, 70);
       this.guy.anchor.setTo(0.5, 1.0);
       this.isChoking = false;
       this.isOverThroat = false;
@@ -51,9 +51,14 @@
         "Science has shown physical violence\nto be the key to releasing stress.",
         "Press on his throat. The longer the better.",
         "It's just a computer program so don't worry.",
-        "I did give it a pain counter that\ngoes up while being choked.",
+        {
+          text: "I did give it a pain counter that\ngoes up while being choked.",
+          action: function () {
+            this.game.add.tween(this.painText).to({alpha: 1}, 1000, Phaser.Easing.Linear.None, true, 1000);
+          }.bind(this)
+        },
         "But I don't think it's the same as the\npain you, I, or say, a dog would feel.",
-        "Breath deeply and allow all the stress\nto drain out of your body",
+        "Breathe deeply and allow all the stress\nto drain out of your body",
         "Just as the life would be leaving the\nbody of this guy if he were real.",
         "But he's not and you're not crushing\nthe larynx of anything that's alive.",
         "Studies have shown that people who\nchoked the longest had the best results.",
@@ -61,10 +66,6 @@
         "If that matters to you at all.\nI'm not worried about it, really.",
         "Focus your mind on something that\nhappened today which caused you stress.",
         "This is the prick that did that!\nLook into his eyes!",
-        "CHOKE",
-        "CHOKE",
-        "CHOKE",
-        "CHOKE",
         "CHOKE",
         "CHOKE",
         "CHOKE",
@@ -94,6 +95,13 @@
         "CHOKE",
         "CHOKE"
       ];
+      this.painText = this.game.add.text(
+        this.game.width * 0.1, this.game.height * 0.85,
+        '',
+        { font: '48px Arial', fill: '#ffffff', align: 'left'}
+      );
+      this.painText.text = '0';
+      this.painText.alpha = 0;
     },
     update: function() {
       if (!this.textSequenceStarted) {
@@ -144,7 +152,8 @@
     },
     updateScore: function () {
       if (this.isChoking) {
-        this.pain += this.game.time.physicsElapsed * 10;
+        this.pain += this.game.time.physicsElapsed * 100;
+        this.painText.text = Math.floor(this.pain);
       }
     },
     onOverThroat: function () {
@@ -192,6 +201,11 @@
     },
     nextText: function () {
       var thisMessage = this.instructions.shift();
+      if (thisMessage.text) {
+        var action = thisMessage.action;
+        thisMessage = thisMessage.text;
+        action();
+      }
       //var thisMessage = this.instructions.pop();
       this.instructionText.text = thisMessage;
       var tween = this.game.add.tween(this.instructionText).to({alpha: 1}, 1000, Phaser.Easing.Linear.None, true, 1000);
