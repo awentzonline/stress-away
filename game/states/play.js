@@ -19,8 +19,12 @@
       this.currentFrameDuration = 0.0;
       this.chokeArrivalEpsilon = 0.02;
       //
-      this.arm = this.game.add.sprite(this.game.width * 0.5, this.game.height * 0.8, 'arm');
-      this.arm.anchor.setTo(0.5, 0.1);
+      if (this.game.device.desktop) {
+        this.arm = this.game.add.sprite(this.game.width * 0.5, this.game.height * 0.8, 'arm');
+        this.arm.anchor.setTo(0.5, 0.1);
+      } else {
+        this.arm = null;
+      }
       // sfx
       this.chokingSfx = this.game.add.audio('choking');
       this.chokingSfx.allowMultiple = true;
@@ -47,7 +51,9 @@
         this.updateText();
       }
       this.updateChoking();
-      this.updateArm();
+      if (this.arm) {
+        this.updateArm();
+      }
       this.updateGuy();
     },
     updateArm: function () {
