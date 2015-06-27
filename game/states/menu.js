@@ -25,6 +25,9 @@ Menu.prototype = {
     } else {
       this.arm = null;
     }
+
+    var music = this.game.add.audio('background_music');
+    music.play();
   },
   update: function() {
     if(this.game.input.activePointer.justPressed()) {

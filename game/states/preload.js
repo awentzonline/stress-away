@@ -15,6 +15,7 @@ Preload.prototype = {
     this.load.image('logo', 'assets/stressaway.png');
     this.load.image('arm', 'assets/arm.png');
     this.load.audio('choking', 'assets/choking.mp3');
+    this.load.audio('background_music', 'assets/namaste.mp3');
   },
   create: function() {
     this.asset.cropEnabled = false;
