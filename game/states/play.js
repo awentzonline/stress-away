@@ -63,7 +63,7 @@
         "But he's not and you're not crushing\nthe larynx of anything that's alive.",
         "Studies have shown that people who\nchoked the longest had the best results.",
         "Of course, the pain counter will\ncontinue to increment.",
-        "If that matters to you at all.\nI'm not worried about it, really.",
+        "If that matters to you at all.\nI wouldn't worry about it.",
         "Focus your mind on something that\nhappened today which caused you stress.",
         "This is the prick that did that!\nLook into his eyes!",
         "CHOKE",
