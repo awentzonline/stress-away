@@ -22,7 +22,7 @@
       // sfx
       this.chokingSfx = this.game.add.audio('choking');
       this.chokingSfx.allowMultiple = true;
-      this.chokingSfx.addMarker('choke0', 0, 0.88);
+      this.chokingSfx.addMarker('choke0', 0, 0.84);
       this.chokingSfx.addMarker('choke1', 0.88, 0.68);
       this.chokingSfx.addMarker('choke2', 1.56, 1.12);
     },
@@ -32,7 +32,7 @@
     },
     updateArm: function () {
       if (this.isChoking) {
-        this.arm.scale.setTo(0.8, 0.84);
+        this.arm.scale.setTo(0.8, 0.8);
       } else {
         this.arm.scale.setTo(1.0, 1.0);
       }
