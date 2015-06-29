@@ -287,7 +287,7 @@ module.exports = Menu;
             'hitType': 'event',
             'eventCategory': 'game',
             'eventAction': 'stopped choking',
-            'eventValue': this.chokeDuration
+            'eventValue': parseInt(this.chokeDuration)
           });
         }
         this.isChoking = false;
